@@ -117,7 +117,7 @@ async fn main(spawner: Spawner) {
 
     let gpio_pins = control::gpio::Pins {
         asic_resetn: gpio::Output::new(p.PIN_11, gpio::Level::High),
-        asic_pwr_en: gpio::Output::new(p.PIN_26, gpio::Level::High),
+        asic_pwr_en: gpio::Output::new(p.PIN_0, gpio::Level::High),
     };
 
     unwrap!(spawner.spawn(usb_task(builder.build())));
