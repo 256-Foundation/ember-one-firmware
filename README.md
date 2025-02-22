@@ -1,6 +1,6 @@
-# Ember One: Firmware
+# emberOne usbserial Firmware
 
-This repository contains RP2040 USB device-side firmware for the Ember One board
+This repository contains RP2040 USB device-side firmware for the emberOne board
 management controller.
 
 ### Developing
