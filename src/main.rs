@@ -11,7 +11,7 @@ use embassy_rp::{
     flash::{self},
     gpio::{self},
     i2c::{self},
-    peripherals::{UART0, USB},
+    peripherals::{UART1, USB},
     usb::{self},
     Peripheral,
 };
@@ -22,7 +22,7 @@ use static_cell::StaticCell;
 mod control;
 mod uart;
 
-pub type AsicUart = UART0;
+pub type AsicUart = UART1;
 pub type I2cPeripheral = embassy_rp::peripherals::I2C1;
 pub type I2cDriver = i2c::I2c<'static, I2cPeripheral, i2c::Async>;
 pub type UsbPeripheral = embassy_rp::peripherals::USB;
@@ -31,15 +31,15 @@ pub type UsbDevice = embassy_usb::UsbDevice<'static, UsbDriver>;
 
 bind_interrupts!(struct Irqs {
     USBCTRL_IRQ => usb::InterruptHandler<USB>;
-    UART0_IRQ => embassy_rp::uart::BufferedInterruptHandler<UART0>;
+    UART1_IRQ => embassy_rp::uart::BufferedInterruptHandler<UART1>;
     I2C1_IRQ => i2c::InterruptHandler<embassy_rp::peripherals::I2C1>;
 });
 
 const FLASH_SIZE: usize = 4 * 1024 * 1024;
 const VERSION: u16 = 0x0001;
 
-static MANUFACTURER: &str = "OSMU";
-static PRODUCT: &str = "Ember One";
+static MANUFACTURER: &str = "256F";
+static PRODUCT: &str = "EmberOne00";
 
 /// Return a unique serial number for this device by hashing its flash JEDEC ID.
 fn serial_number() -> &'static str {
@@ -100,7 +100,7 @@ async fn main(spawner: Spawner) {
     };
 
     let asic_uart = {
-        let (tx_pin, rx_pin, uart) = (p.PIN_0, p.PIN_1, p.UART0);
+        let (tx_pin, rx_pin, uart) = (p.PIN_8, p.PIN_9, p.UART1);
         static UART_TX_BUF: StaticCell<[u8; 64]> = StaticCell::new();
         let tx_buf = &mut UART_TX_BUF.init([0; 64])[..];
         static UART_RX_BUF: StaticCell<[u8; 64]> = StaticCell::new();
@@ -116,8 +116,8 @@ async fn main(spawner: Spawner) {
     };
 
     let gpio_pins = control::gpio::Pins {
-        asic_resetn: gpio::Output::new(p.PIN_25, gpio::Level::High),
-        asic_pwr_en: gpio::Output::new(p.PIN_26, gpio::Level::High),
+        asic_resetn: gpio::Output::new(p.PIN_11, gpio::Level::High),
+        asic_pwr_en: gpio::Output::new(p.PIN_0, gpio::Level::Low),
     };
 
     unwrap!(spawner.spawn(usb_task(builder.build())));
