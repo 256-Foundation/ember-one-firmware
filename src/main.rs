@@ -11,7 +11,8 @@ use embassy_rp::{
     flash::{self},
     gpio::{self},
     i2c::{self},
-    peripherals::{UART1, USB},
+    peripherals::{PIO0, UART1, USB},
+    pio::{self},
     usb::{self},
     Peripheral,
 };
@@ -33,6 +34,7 @@ bind_interrupts!(struct Irqs {
     USBCTRL_IRQ => usb::InterruptHandler<USB>;
     UART1_IRQ => embassy_rp::uart::BufferedInterruptHandler<UART1>;
     I2C1_IRQ => i2c::InterruptHandler<embassy_rp::peripherals::I2C1>;
+    PIO0_IRQ_0 => embassy_rp::pio::InterruptHandler<PIO0>;
 });
 
 const FLASH_SIZE: usize = 4 * 1024 * 1024;
@@ -120,8 +122,11 @@ async fn main(spawner: Spawner) {
         asic_pwr_en: gpio::Output::new(p.PIN_0, gpio::Level::Low),
     };
 
+    let pio::Pio { mut common, sm0, .. } = pio::Pio::new(p.PIO0, Irqs);
+    let led = control::led::Led::new(&mut common, sm0, p.PIN_16, p.DMA_CH0.into());
+
     unwrap!(spawner.spawn(usb_task(builder.build())));
-    unwrap!(spawner.spawn(control::usb_task(control_class, i2c, gpio_pins)));
+    unwrap!(spawner.spawn(control::usb_task(control_class, i2c, gpio_pins, led)));
     unwrap!(spawner.spawn(uart::usb_task(asic_uart_class, asic_uart)));
 
     loop {
