@@ -123,7 +123,7 @@ async fn main(spawner: Spawner) {
     };
 
     let pio::Pio { mut common, sm0, .. } = pio::Pio::new(p.PIO0, Irqs);
-    let led = control::led::Led::new(&mut common, sm0, p.PIN_16, p.DMA_CH0.into());
+    let led = control::led::Led::new(&mut common, sm0, p.PIN_1, p.DMA_CH0.into());
 
     unwrap!(spawner.spawn(usb_task(builder.build())));
     unwrap!(spawner.spawn(control::usb_task(control_class, i2c, gpio_pins, led)));

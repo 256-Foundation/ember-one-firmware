@@ -32,6 +32,7 @@ pub enum Command {
 
 impl Command {
     pub fn from_bytes(buf: &[u8]) -> Result<Self, CommandError> {
+        //defmt::println!("SETTING LED {:x}", buf);
         match buf {
             [0x10, r, g, b] => Ok(Self::SetRGB { r: *r, g: *g, b: *b }),
             _ => Err(CommandError::Invalid),

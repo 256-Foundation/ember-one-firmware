@@ -51,7 +51,7 @@ impl Command {
             LED_COMMAND => Ok(Self {
                 id,
                 bus: buf[1],
-                inner: CommandInner::Led(led::Command::from_bytes(&buf[2..])?),
+                inner: CommandInner::Led(led::Command::from_bytes(&buf[3..])?),
             }),
             _ => Err(CommandError::Invalid),
         }
