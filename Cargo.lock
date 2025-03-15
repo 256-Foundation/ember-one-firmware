@@ -610,6 +610,7 @@ dependencies = [
  "panic-probe",
  "portable-atomic",
  "serde",
+ "smart-leds",
  "static_cell",
 ]
 
