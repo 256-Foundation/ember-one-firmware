@@ -17,6 +17,7 @@ pub enum Command {
 
 impl Command {
     pub fn from_bytes(buf: &[u8]) -> Result<Self, CommandError> {
+        //defmt::println!("ADC COMMAND {:x}", buf);
         match buf {
             [0x50] => Ok(Self::ReadVdd),
             [0x51] => Ok(Self::ReadVin),

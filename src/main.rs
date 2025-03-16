@@ -131,13 +131,11 @@ async fn main(spawner: Spawner) {
         vin: adc::Channel::new_pin(p.PIN_27, gpio::Pull::None),
     };
 
-    unwrap!(spawner.spawn(usb_task(builder.build())));
-    unwrap!(spawner.spawn(control::usb_task(control_class, i2c, gpio_pins, adc_pins)));
     let pio::Pio { mut common, sm0, .. } = pio::Pio::new(p.PIO0, Irqs);
     let led = control::led::Led::new(&mut common, sm0, p.PIN_1, p.DMA_CH0.into());
 
     unwrap!(spawner.spawn(usb_task(builder.build())));
-    unwrap!(spawner.spawn(control::usb_task(control_class, i2c, gpio_pins, led)));
+    unwrap!(spawner.spawn(control::usb_task(control_class, i2c, gpio_pins, adc_pins, led)));
     unwrap!(spawner.spawn(uart::usb_task(asic_uart_class, asic_uart)));
 
     loop {

@@ -56,7 +56,8 @@ impl Command {
             ADC_COMMAND => Ok(Self {
                 id,
                 bus: buf[1],
-                inner: CommandInner::Adc(adc::Command::from_bytes(&buf[2..])?),
+                inner: CommandInner::Adc(adc::Command::from_bytes(&buf[3..])?),
+            }),
             LED_COMMAND => Ok(Self {
                 id,
                 bus: buf[1],
