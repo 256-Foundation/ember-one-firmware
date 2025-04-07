@@ -94,13 +94,13 @@ Commands:
 
 Data:
 
-- [I2C address, <bytes to write>, <number of bytes to read>]
+- [I2C address, (bytes to write), (number of bytes to read)]
 
 Example:
 
-- write 0xDE to addr 0x4F -> `08 00 01 00 05 20 4F DE`
-- read one byte from addr 0x4C -> `08 00 01 00 05 30 4C 01`
-- readwrite two bytes from addr 0x32, reg 0xFE -> `09 00 01 00 05 40 32 FE 02`
+- write 0xDE to addr 0x4F: `08 00 01 00 05 20 4F DE`
+- read one byte from addr 0x4C: `08 00 01 00 05 30 4C 01`
+- readwrite two bytes from addr 0x32, reg 0xFE: `09 00 01 00 05 40 32 FE 02`
 
 **GPIO**
 
@@ -114,7 +114,7 @@ Data:
 
 Example
 
-- Set pin 1 Low  -> `07 00 00 00 06 01 00`
+- Set pin 1 Low: `07 00 00 00 06 01 00`
 
 **ADC**
 
@@ -125,7 +125,7 @@ Commands:
 
 Example:
 
-- read VDD Pin -> `06 00 00 00 07 50`
+- read VDD Pin: `06 00 00 00 07 50`
 
 **LED**
 
@@ -139,4 +139,4 @@ Data:
 
 Example:
 
-- Set LED Magenta -> `09 00 00 00 08 10 FF 00 FF`
+- Set LED Magenta: `09 00 00 00 08 10 FF 00 FF`
