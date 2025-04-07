@@ -56,6 +56,8 @@ When connected the emberOne usbserial firmware will create two serial ports. Usu
 
 
 ### Control Serial
+- First serial port
+- baudrate does not matter
 
 **Packet Format**
 
@@ -96,7 +98,8 @@ Data:
 
 Example:
 
-- readwrite 2 bytes from addr 0x40, reg 0xFE -> `09 00 01 00 05 40 40 FF 02`
+- readwrite two bytes from addr 0x32, reg 0xFE -> `09 00 01 00 05 40 32 FF 02`
+- read one byte from addr 0x4C -> `08 00 01 00 05 30 4C 01`
 
 **GPIO**
 
